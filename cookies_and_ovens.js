@@ -104,6 +104,14 @@ class KueCoklat extends Kue{
   }
 }
 
+class KueKacang extends Kue{
+  constructor(component){
+    super(component)
+    this._waktuAdonan   = 30
+    this._waktuPanggang = 120
+  }
+}
+
 
 
 let lemariKita = new Lemari({
@@ -113,7 +121,7 @@ let lemariKita = new Lemari({
     tepung:10000
 })
 lemariKita.stockLemari()
-
+////////////////////////////////// kue cokelat
 let kueCoklat = new KueCoklat({
   kacang:0,
   coklat:500,
@@ -127,5 +135,24 @@ kueCoklat.panggangKue({
   waktuPanggangUser:91
 })
 kueCoklat.kueMatang()
+console.log("KONDISI LEMARI SAAT INI")
+lemariKita.stockLemari()
+
+
+////////////////////////////////// kue kacang
+let kueKacang = new KueKacang({
+  kacang:220,
+  coklat:0,
+  telur :3,
+  tepung:90,
+  namaKue:"Kue Kacang"
+})
+
+kueKacang.ambilBahan()
+kueKacang.adonanKue()
+kueKacang.panggangKue({
+  waktuPanggangUser:120
+})
+kueKacang.kueMatang()
 console.log("KONDISI LEMARI SAAT INI")
 lemariKita.stockLemari()
