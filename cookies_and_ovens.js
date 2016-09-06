@@ -32,7 +32,7 @@ class Oven {
   }
 
   startTimer(time){
-    let pointer = this._tray[0];
+    let pointer = this._tray[0]
     let pointer_1 = this;
     this.timerOven = setInterval(function () {
       pointer_1.timePanggang+=1000
@@ -45,28 +45,30 @@ class Oven {
       }
       console.log(pointer_1.timePanggang/1000,"s")
       //jika timer mencapai time hentikan panggangan
-      if(time === pointer_1.timePanggang){
+      if(pointer_1.timePanggang === time){
         clearInterval(pointer_1.timerOven)
         //selesai bunyikan alarm
         pointer_1.alarm()
+        pointer_1.keluarinKue()
       }
     },1000)
   }
   getStatus(){
-
-    return this._tray[0]._status
-
+    return this._tray[1]._status
   }
   //ketika ingin matikan oven dengan settimer berlebihan
   stopPaksa(){
   clearInterval(this.timerOven)
   }
   alarm(){
-    console.log("kue sudah matang!!!");
+    let pointer = this._tray[0]
+    console.log(`${pointer._name}sudah matang!!!`);
+  }
+  keluarinKue(){
+    this._tray.splice(0,this._tray.length)
   }
 
 }
-
 class Kue {
   constructor(options) {
     this._name = options['name']
@@ -123,5 +125,4 @@ rasa: "coklat",
 harga:200000,
 ukuran:"besar"})
 oven.add(kacang)
-oven.add(coklat)
 oven.panggang()
