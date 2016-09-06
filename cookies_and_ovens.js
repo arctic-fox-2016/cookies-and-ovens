@@ -18,11 +18,13 @@ class Oven {
 
   panggang(){
     //start timer
-    this.startTimer()
+    //console.log(this._tray[0].lama_panggang)
+  this.startTimer(this._tray[0].lama_panggang)
+    console.log(`sedang memanggang. tunggu ${this._tray[0].lama_panggang} ms`);
 
   }
   add(kue){
-    if(this._tray.length < this._kapasitas){
+    if(this._tray.length > this._kapasitas){
       console.log("oven sudah penuh")
     }else{
     this._tray.push(kue)
@@ -30,21 +32,23 @@ class Oven {
   }
 
   startTimer(time){
-
-    timerOven = setInterval(function () {
-      timePanggang+=1000
-      if(timePanggang >= (~~(this._tray[0]._lama_panggang*(3/4)))){
-        this._tray[0]._status = "hampirmasak"
-      } else if(timePanggang >= (~~(this._tray[0]._lama_panggang))){
-        this._tray[0]._status = "masak"
-      } else if(timePanggang > (~~(this._tray[0]._lama_panggang+5))){
-        this._tray[0]._status = "hangus"
+    let pointer = this._tray[0];
+    let pointer_1 = this;
+    this.timerOven = setInterval(function () {
+      pointer_1.timePanggang+=1000
+      if(pointer_1.timePanggang >= (~~(pointer.lama_panggang*(3/4)))){
+        pointer._status = "hampirmasak"
+      } else if(pointer_1.timePanggang >= (~~(pointer.lama_panggang))){
+        pointer._status = "masak"
+      } else if(pointer_1.timePanggang > (~~(pointer.lama_panggang+5))){
+        pointer._status = "hangus"
       }
+      console.log(pointer_1.timePanggang/1000,"s")
       //jika timer mencapai time hentikan panggangan
-      if(time === timePanggang){
-        clearInterval(timerOven)
+      if(time === pointer_1.timePanggang){
+        clearInterval(pointer_1.timerOven)
         //selesai bunyikan alarm
-        this.alarm()
+        pointer_1.alarm()
       }
     },1000)
   }
@@ -55,7 +59,7 @@ class Oven {
   }
   //ketika ingin matikan oven dengan settimer berlebihan
   stopPaksa(){
-  clearInterval(timerOven)
+  clearInterval(this.timerOven)
   }
   alarm(){
     console.log("kue sudah matang!!!");
@@ -66,8 +70,7 @@ class Oven {
 class Kue {
   constructor(options) {
     this._name = options['name']
-    this._bahan = "mentah"
-    this._status = options['status']
+    this._status = "mentah"
     this._rasa = options['rasa']
     this._harga = options['harga']
     this._ukuran = options['ukuran']
@@ -89,23 +92,36 @@ class Kue {
       }
 }
 
-class kuekacang extends Kue
+class Kuekacang extends Kue
 {
   constructor(options)
   {
     super(options)
     this._jumlah = 100
-    this._lama_panggang = 30000 //milisecond
+    this.lama_panggang = 3000 //milisecond
   }
 
 }
 
-class kueCoklat extends Kue
+class KueCoklat extends Kue
 {
   constructor(options)
   {
     super(options)
     this._jumlah = 150
-    this._lama_panggang = 25000 //milisecond
+    this.lama_panggang = 3000 //milisecond
   }
 }
+
+let oven = new Oven({kapasitas:3})
+let kacang = new Kuekacang({name:"kue kacang",
+rasa: "kacang",
+harga:150000,
+ukuran:"sedang"})
+let coklat = new KueCoklat({name:"kue coklat",
+rasa: "coklat",
+harga:200000,
+ukuran:"besar"})
+oven.add(kacang)
+oven.add(coklat)
+oven.panggang()
